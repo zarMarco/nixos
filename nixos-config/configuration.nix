@@ -9,13 +9,15 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./users.nix
+      ./desktop.nix 
     ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
-  
+
 
    networking.hostName = "legion_of_nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -23,7 +25,11 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    hardware.bumblebee.enable = true;
+    nixpkgs.config.allowUnfree = true; #needed for nvidia drivers  
+  
 
+  
   # Select internationalisation properties.
    i18n = {
      consoleFont = "Lat2-Terminus16";
@@ -72,13 +78,10 @@
   # Enable touchpad support.
    services.xserver.libinput.enable = true;
 
-  # Enable the KDE Desktop Environment.
-   services.xserver.displayManager.sddm.enable = true;
-   services.xserver.desktopManager.plasma5.enable = true;
-   
+
        users.extraUsers.root = {
       shell = pkgs.zsh;
-    };  
+    };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.guest = {
